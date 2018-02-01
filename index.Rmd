@@ -17,7 +17,7 @@ output:
 options(htmltools.dir.version = FALSE)
 options(width = 60, tibble.width = 60)
 knit_print.data.frame <- function(x, ...) paste0(format(as_tibble(x)), collapse = "\n")
-knitr::opts_knit$set(collapse = TRUE)
+knitr::opts_chunk$set(collapse = TRUE)
 ```
 
 background-image: url(images/humane.png)
