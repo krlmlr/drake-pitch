@@ -39,12 +39,17 @@ From Jenny's presentation
 library(drake)
 library(tidyverse)
 plan &lt;- drake_plan(
+  
   raw_data = readxl::read_xlsx("raw-data.xlsx"),
+
   data = raw_data %&gt;%
     mutate(Species = forcats::fct_inorder(Species)),
+  
   hist = ggplot(data, aes(x = Petal.Width, fill = Species)) +
     geom_histogram(),
+  
   model = lm(Sepal.Width ~ Petal.Width + Species, data)
+  
 )
 ```
 
@@ -254,13 +259,18 @@ summary(model)
 
 ```r
 plan &lt;- drake_plan(
+  
   raw_data = readxl::read_xlsx("raw-data.xlsx"),
+  
   data = raw_data %&gt;%
     mutate(Species = forcats::fct_inorder(Species)) %&gt;% 
     select(-X__1),
+  
   hist = ggplot(data, aes(x = Petal.Width, fill = Species)) +
     geom_histogram(bins = 10),
+  
   model = lm(Sepal.Width ~ Petal.Width + Species, data)
+  
 )
 ```
 
