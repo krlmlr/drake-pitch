@@ -1,0 +1,117 @@
+---
+title: "drake"
+subtitle: "make for R"
+author: "Kirill Müller"
+date: "2018/02/01, rstudio::conf(), San Diego"
+output:
+  xaringan::moon_reader:
+    output_dir: "docs"
+    lib_dir: docs/libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(width = 60, tibble.width = 60)
+knit_print.data.frame <- function(x, ...) paste0(format(as_tibble(x)), collapse = "\n")
+```
+
+background-image: url(images/humane.png)
+
+???
+
+From Jenny's presentation
+
+---
+
+```{r include = FALSE}
+library(drake)
+library(tidyverse)
+unlink(".drake", recursive = TRUE)
+```
+
+```{r}
+library(drake)
+library(tidyverse)
+plan <- drake_plan(
+  raw_data = readxl::read_xlsx("raw-data.xlsx"),
+  data = raw_data %>%
+    mutate(Species = forcats::fct_inorder(Species)),
+  hist = ggplot(data, aes(x = Petal.Width, fill = Species)) +
+    geom_histogram(),
+  model = lm(Sepal.Width ~ Petal.Width + Species, data)
+)
+```
+
+---
+
+```{r echo = FALSE}
+config <- drake_config(plan, verbose = FALSE)
+vis_drake_graph(config, targets_only = TRUE, build_times = FALSE)
+```
+
+---
+
+```{r}
+make(plan)
+```
+
+---
+
+```{r}
+make(plan)
+```
+
+---
+
+```{r}
+loadd(data, verbose = 0)
+data
+```
+
+---
+
+```{r}
+loadd(hist, verbose = 0)
+hist
+```
+
+---
+
+```{r}
+loadd(model, verbose = 0)
+model
+summary(model)
+```
+
+---
+
+```{r}
+plan <- drake_plan(
+  raw_data = readxl::read_xlsx("raw-data.xlsx"),
+  data = raw_data %>%
+    mutate(Species = forcats::fct_inorder(Species)) %>% 
+    select(-X__1),
+  hist = ggplot(data, aes(x = Petal.Width, fill = Species)) +
+    geom_histogram(bins = 10),
+  model = lm(Sepal.Width ~ Petal.Width + Species, data)
+)
+```
+
+---
+
+```{r echo = FALSE}
+config <- drake_config(plan, verbose = FALSE)
+vis_drake_graph(config, targets_only = TRUE, build_times = FALSE)
+```
+
+---
+
+```{r}
+make(plan, verbose = 0)
+loadd(hist, verbose = 0)
+hist
+```
