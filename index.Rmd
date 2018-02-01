@@ -1,5 +1,5 @@
 ---
-title: "drake"
+title: "[drake](https://github.com/ropensci/drake)"
 subtitle: "make for R"
 author: "Kirill Müller"
 date: "2018/02/01, rstudio::conf(), San Diego"
