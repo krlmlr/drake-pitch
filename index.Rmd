@@ -17,23 +17,24 @@ output:
 options(htmltools.dir.version = FALSE)
 options(width = 60, tibble.width = 60)
 knit_print.data.frame <- function(x, ...) paste0(format(as_tibble(x)), collapse = "\n")
+knitr::opts_knit$set(collapse = TRUE)
 ```
 
 background-image: url(images/humane.png)
 
 ???
 
-From Jenny's presentation
+From Jenny's presentation: https://github.com/jennybc/what-they-forgot
 
 ---
 
-```{r include = FALSE}
+```{r library, include = FALSE}
 library(drake)
 library(tidyverse)
 unlink(".drake", recursive = TRUE)
 ```
 
-```{r}
+```{r plan}
 library(drake)
 library(tidyverse)
 plan <- drake_plan(
@@ -53,26 +54,26 @@ plan <- drake_plan(
 
 ---
 
-```{r echo = FALSE}
+```{r vis-new, echo = FALSE}
 config <- drake_config(plan, verbose = FALSE)
 vis_drake_graph(config, targets_only = TRUE, build_times = FALSE)
 ```
 
 ---
 
-```{r}
+```{r make}
 make(plan)
 ```
 
 ---
 
-```{r}
+```{r make-again}
 make(plan)
 ```
 
 ---
 
-```{r echo = FALSE}
+```{r vis-done, echo = FALSE}
 config <- drake_config(plan, verbose = FALSE)
 vis_drake_graph(config, targets_only = TRUE, build_times = FALSE)
 ```
@@ -80,21 +81,21 @@ vis_drake_graph(config, targets_only = TRUE, build_times = FALSE)
 
 ---
 
-```{r}
+```{r data}
 loadd(data, verbose = 0)
 data
 ```
 
 ---
 
-```{r}
+```{r hist}
 loadd(hist, verbose = 0)
 hist
 ```
 
 ---
 
-```{r}
+```{r model}
 loadd(model, verbose = 0)
 model
 summary(model)
@@ -102,7 +103,7 @@ summary(model)
 
 ---
 
-```{r}
+```{r better-plan}
 plan <- drake_plan(
   
   raw_data = readxl::read_xlsx("raw-data.xlsx"),
@@ -121,14 +122,14 @@ plan <- drake_plan(
 
 ---
 
-```{r echo = FALSE}
+```{r vis-stale, echo = FALSE}
 config <- drake_config(plan, verbose = FALSE)
 vis_drake_graph(config, targets_only = TRUE, build_times = FALSE)
 ```
 
 ---
 
-```{r}
+```{r make-fixed}
 make(plan, verbose = 0)
 loadd(hist, verbose = 0)
 hist
