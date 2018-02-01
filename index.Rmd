@@ -67,6 +67,14 @@ make(plan)
 
 ---
 
+```{r echo = FALSE}
+config <- drake_config(plan, verbose = FALSE)
+vis_drake_graph(config, targets_only = TRUE, build_times = FALSE)
+```
+
+
+---
+
 ```{r}
 loadd(data, verbose = 0)
 data
@@ -115,3 +123,21 @@ make(plan, verbose = 0)
 loadd(hist, verbose = 0)
 hist
 ```
+
+---
+
+---
+
+background-image: url(https://avatars1.githubusercontent.com/u/1741643?v=3&s=460)
+background-size: 20%
+background-position: 0% 100%
+
+class: center, middle
+
+# Thanks!
+
+Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
+
+# https://krlmlr.github.io/drake-pitch
+
+### https://github.com/krlmlr, @krlmlr

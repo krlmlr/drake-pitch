@@ -156,6 +156,12 @@ make(plan)
 
 ---
 
+<div id="htmlwidget-ac00066e7f6365b7f0d3" style="width:504px;height:504px;" class="visNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ac00066e7f6365b7f0d3">{"x":{"nodes":{"id":["raw_data","data","hist","model"],"label":["raw_data","data","hist","model"],"status":["up to date","up to date","up to date","up to date"],"type":["object","object","object","object"],"level":[0,1,2,2],"font.size":[20,20,20,20],"color":["#228B22","#228B22","#228B22","#228B22"],"shape":["dot","dot","dot","dot"],"hover_label":["readxl::read_xlsx('raw-data.xlsx')","raw_data %>% mutate(Species =\nforcats::fct_inorder(Species))","ggplot(data, aes(x = Petal.Width, fill = Species)) +\ngeom_histogram()","lm(Sepal.Width ~ Petal.Width + Species, data)"],"x":[0,0,-1,1],"y":[-1,0,1,1]},"edges":{"from":["raw_data","data","data"],"to":["data","hist","model"],"arrows":["to","to","to"]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"direction":"LR"}},"edges":{"smooth":false},"physics":{"stabilization":false},"interaction":{"navigationButtons":true,"hover":true}},"groups":null,"width":null,"height":null,"idselection":{"enabled":false},"byselection":{"enabled":false},"main":{"text":"Workflow graph","style":"font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;"},"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","igraphlayout":{"type":"square"},"tooltipStay":300,"tooltipStyle":"position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);","events":{"hoverNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }","blurNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }"}},"evals":["events.hoverNode","events.blurNode"],"jsHooks":[]}</script>
+
+
+---
+
 
 ```r
 loadd(data, verbose = 0)
@@ -193,7 +199,7 @@ hist
 ## `binwidth`.
 ```
 
-![](/home/muelleki/git/R/drake-pitch/docs/index_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+![](/home/muelleki/git/R/drake-pitch/docs/index_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -260,8 +266,8 @@ plan &lt;- drake_plan(
 
 ---
 
-<div id="htmlwidget-ac00066e7f6365b7f0d3" style="width:504px;height:504px;" class="visNetwork html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ac00066e7f6365b7f0d3">{"x":{"nodes":{"id":["raw_data","data","hist","model"],"label":["raw_data","data","hist","model"],"status":["up to date","outdated","outdated","outdated"],"type":["object","object","object","object"],"level":[0,1,2,2],"font.size":[20,20,20,20],"color":["#228B22","#000000","#000000","#000000"],"shape":["dot","dot","dot","dot"],"hover_label":["readxl::read_xlsx('raw-data.xlsx')","raw_data %>% mutate(Species =\nforcats::fct_inorder(Species)) %>% select(-X__1)","ggplot(data, aes(x = Petal.Width, fill = Species)) +\ngeom_histogram(bins = 10)","lm(Sepal.Width ~ Petal.Width + Species, data)"],"x":[0,0,-1,1],"y":[-1,0,1,1]},"edges":{"from":["raw_data","data","data"],"to":["data","hist","model"],"arrows":["to","to","to"]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"direction":"LR"}},"edges":{"smooth":false},"physics":{"stabilization":false},"interaction":{"navigationButtons":true,"hover":true}},"groups":null,"width":null,"height":null,"idselection":{"enabled":false},"byselection":{"enabled":false},"main":{"text":"Workflow graph","style":"font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;"},"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","igraphlayout":{"type":"square"},"tooltipStay":300,"tooltipStyle":"position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);","events":{"hoverNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }","blurNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }"}},"evals":["events.hoverNode","events.blurNode"],"jsHooks":[]}</script>
+<div id="htmlwidget-a261f1c13aea9e511342" style="width:504px;height:504px;" class="visNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a261f1c13aea9e511342">{"x":{"nodes":{"id":["raw_data","data","hist","model"],"label":["raw_data","data","hist","model"],"status":["up to date","outdated","outdated","outdated"],"type":["object","object","object","object"],"level":[0,1,2,2],"font.size":[20,20,20,20],"color":["#228B22","#000000","#000000","#000000"],"shape":["dot","dot","dot","dot"],"hover_label":["readxl::read_xlsx('raw-data.xlsx')","raw_data %>% mutate(Species =\nforcats::fct_inorder(Species)) %>% select(-X__1)","ggplot(data, aes(x = Petal.Width, fill = Species)) +\ngeom_histogram(bins = 10)","lm(Sepal.Width ~ Petal.Width + Species, data)"],"x":[0,0,-1,1],"y":[-1,0,1,1]},"edges":{"from":["raw_data","data","data"],"to":["data","hist","model"],"arrows":["to","to","to"]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"direction":"LR"}},"edges":{"smooth":false},"physics":{"stabilization":false},"interaction":{"navigationButtons":true,"hover":true}},"groups":null,"width":null,"height":null,"idselection":{"enabled":false},"byselection":{"enabled":false},"main":{"text":"Workflow graph","style":"font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;"},"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","igraphlayout":{"type":"square"},"tooltipStay":300,"tooltipStyle":"position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);","events":{"hoverNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }","blurNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }"}},"evals":["events.hoverNode","events.blurNode"],"jsHooks":[]}</script>
 
 ---
 
@@ -272,7 +278,25 @@ loadd(hist, verbose = 0)
 hist
 ```
 
-![](/home/muelleki/git/R/drake-pitch/docs/index_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+![](/home/muelleki/git/R/drake-pitch/docs/index_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
+
+---
+
+---
+
+background-image: url(https://avatars1.githubusercontent.com/u/1741643?v=3&amp;s=460)
+background-size: 20%
+background-position: 0% 100%
+
+class: center, middle
+
+# Thanks!
+
+Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
+
+# https://krlmlr.github.io/drake-pitch
+
+### https://github.com/krlmlr, @krlmlr
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
