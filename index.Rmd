@@ -1,8 +1,8 @@
 ---
-title: "[drake](https://github.com/ropensci/drake)"
+title: "The [drake](https://github.com/ropensci/drake) R package"
 subtitle: "make for R"
 author: "Kirill Müller"
-date: "2018/02/01, rstudio::conf(), San Diego"
+date: "2018-02-01, rstudio::conf(), San Diego"
 output:
   xaringan::moon_reader:
     output_dir: "docs"
