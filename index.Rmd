@@ -15,7 +15,7 @@ output:
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
-options(width = 60, tibble.width = 60)
+options(width = 65)
 knit_print.data.frame <- function(x, ...) paste0(format(as_tibble(x)), collapse = "\n")
 knitr::opts_chunk$set(collapse = TRUE)
 knitr::opts_chunk$set(fig.path = "index_files/figure-html/")
