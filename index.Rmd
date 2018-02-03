@@ -57,7 +57,10 @@ plan <- drake_plan(
 
 ```{r vis-new, echo = FALSE}
 config <- drake_config(plan, verbose = FALSE)
-vis_drake_graph(config, targets_only = TRUE, build_times = FALSE)
+vis_drake_graph(
+  config,
+  targets_only = TRUE, build_times = FALSE, full_legend = FALSE
+)
 ```
 
 ---
@@ -76,7 +79,10 @@ make(plan)
 
 ```{r vis-done, echo = FALSE}
 config <- drake_config(plan, verbose = FALSE)
-vis_drake_graph(config, targets_only = TRUE, build_times = FALSE)
+vis_drake_graph(
+  config,
+  targets_only = TRUE, build_times = FALSE, full_legend = FALSE
+)
 ```
 
 
@@ -125,7 +131,10 @@ plan <- drake_plan(
 
 ```{r vis-stale, echo = FALSE}
 config <- drake_config(plan, verbose = FALSE)
-vis_drake_graph(config, targets_only = TRUE, build_times = FALSE)
+vis_drake_graph(
+  config,
+  targets_only = TRUE, build_times = FALSE, full_legend = FALSE
+)
 ```
 
 ---
