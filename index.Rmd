@@ -117,10 +117,10 @@ plan <- drake_plan(
   
   data = raw_data %>%
     mutate(Species = forcats::fct_inorder(Species)) %>% 
-    select(-X__1),
+    select(-X__1), #<<
   
   hist = ggplot(data, aes(x = Petal.Width, fill = Species)) +
-    geom_histogram(bins = 10),
+    geom_histogram(bins = 10), #<<
   
   model = lm(Sepal.Width ~ Petal.Width + Species, data)
   
