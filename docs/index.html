@@ -37,21 +37,32 @@ From Jenny's presentation: https://github.com/jennybc/what-they-forgot
 
 
 
+
+<div id="htmlwidget-ec897849c5c50a6f7846" style="width:100%;height:504px;" class="visNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ec897849c5c50a6f7846">{"x":{"nodes":{"id":["\"raw-data.xlsx\"","raw_data","data","hist","model"],"label":["\"raw-data.xlsx\"","raw_data","data","hist","model"],"status":["imported","outdated","outdated","outdated","outdated"],"type":["file","object","object","object","object"],"level":[0,1,2,3,3],"font.size":[20,20,20,20,20],"color":["#1874CD","#000000","#000000","#000000","#000000"],"shape":["square","dot","dot","dot","dot"],"hover_label":["\"raw-data.xlsx\"","readxl::read_xlsx(file_in(\"raw-data.xlsx\"))","mutate(raw_data, Species = forcats::fct_inorder(Species))","create_plot(data)","lm(Sepal.Width ~ Petal.Width + Species, data)"],"x":[0,0,0,-1,1],"y":[-1,-0.333333333333333,0.333333333333333,1,1]},"edges":{"from":["data","data","raw_data","\"raw-data.xlsx\""],"to":["model","hist","data","raw_data"],"arrows":["to","to","to","to"]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"direction":"LR"}},"edges":{"smooth":false},"physics":{"stabilization":false},"interaction":{"navigationButtons":true,"hover":true}},"groups":null,"width":"100%","height":null,"idselection":{"enabled":false},"byselection":{"enabled":false},"main":{"text":"Workflow graph","style":"font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;"},"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","igraphlayout":{"type":"square"},"tooltipStay":300,"tooltipStyle":"position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);","events":{"hoverNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }","blurNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }"}},"evals":["events.hoverNode","events.blurNode"],"jsHooks":[]}</script>
+
+
+---
+
+
 ```r
 library(drake)
 library(tidyverse)
+
+create_plot &lt;- function(data) {
+  ggplot(data, aes(x = Petal.Width, fill = Species)) +
+    geom_histogram()
+}
+
 plan &lt;- drake_plan(
-  
   raw_data = readxl::read_xlsx(file_in("raw-data.xlsx")),
 
   data = raw_data %&gt;%
     mutate(Species = forcats::fct_inorder(Species)),
   
-  hist = ggplot(data, aes(x = Petal.Width, fill = Species)) +
-    geom_histogram(),
+  hist = create_plot(data),
   
   model = lm(Sepal.Width ~ Petal.Width + Species, data)
-  
 )
 
 plan
@@ -60,14 +71,14 @@ plan
 ##   &lt;chr&gt;    &lt;chr&gt;                                                
 ## 1 raw_data "readxl::read_xlsx(file_in(\"raw-data.xlsx\"))"      
 ## 2 data     raw_data %&gt;% mutate(Species = forcats::fct_inorder(S…
-## 3 hist     ggplot(data, aes(x = Petal.Width, fill = Species)) +…
+## 3 hist     create_plot(data)                                    
 ## 4 model    lm(Sepal.Width ~ Petal.Width + Species, data)
 ```
 
 ---
 
-<div id="htmlwidget-ec897849c5c50a6f7846" style="width:100%;height:504px;" class="visNetwork html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ec897849c5c50a6f7846">{"x":{"nodes":{"id":["\"raw-data.xlsx\"","raw_data","data","hist","model"],"label":["\"raw-data.xlsx\"","raw_data","data","hist","model"],"status":["imported","outdated","outdated","outdated","outdated"],"type":["file","object","object","object","object"],"level":[0,1,2,3,3],"font.size":[20,20,20,20,20],"color":["#1874CD","#000000","#000000","#000000","#000000"],"shape":["square","dot","dot","dot","dot"],"hover_label":["\"raw-data.xlsx\"","readxl::read_xlsx(file_in(\"raw-data.xlsx\"))","raw_data %>% mutate(Species =\nforcats::fct_inorder(Species))","ggplot(data, aes(x = Petal.Width, fill = Species)) +\ngeom_histogram()","lm(Sepal.Width ~ Petal.Width + Species, data)"],"x":[0,0,0,-1,1],"y":[-1,-0.333333333333333,0.333333333333333,1,1]},"edges":{"from":["data","data","raw_data","\"raw-data.xlsx\""],"to":["model","hist","data","raw_data"],"arrows":["to","to","to","to"]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"direction":"LR"}},"edges":{"smooth":false},"physics":{"stabilization":false},"interaction":{"navigationButtons":true,"hover":true}},"groups":null,"width":"100%","height":null,"idselection":{"enabled":false},"byselection":{"enabled":false},"main":{"text":"Workflow graph","style":"font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;"},"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","legend":{"width":0.2,"useGroups":false,"position":"left","ncol":1,"stepX":100,"stepY":100,"zoom":true,"nodes":{"label":["Outdated","Imported","Object","File"],"color":["#000000","#1874CD","#888888","#888888"],"shape":["dot","dot","dot","square"],"font.color":["black","black","black","black"],"font.size":[20,20,20,20],"id":[2,5,7,9]},"nodesToDataframe":true},"igraphlayout":{"type":"square"},"tooltipStay":300,"tooltipStyle":"position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);","events":{"hoverNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }","blurNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }"}},"evals":["events.hoverNode","events.blurNode"],"jsHooks":[]}</script>
+<div id="htmlwidget-ac00066e7f6365b7f0d3" style="width:100%;height:504px;" class="visNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ac00066e7f6365b7f0d3">{"x":{"nodes":{"id":["\"raw-data.xlsx\"","raw_data","data","hist","model"],"label":["\"raw-data.xlsx\"","raw_data","data","hist","model"],"status":["imported","outdated","outdated","outdated","outdated"],"type":["file","object","object","object","object"],"level":[0,1,2,3,3],"font.size":[20,20,20,20,20],"color":["#1874CD","#000000","#000000","#000000","#000000"],"shape":["square","dot","dot","dot","dot"],"hover_label":["\"raw-data.xlsx\"","readxl::read_xlsx(file_in(\"raw-data.xlsx\"))","raw_data %>% mutate(Species =\nforcats::fct_inorder(Species))","create_plot(data)","lm(Sepal.Width ~ Petal.Width + Species, data)"],"x":[0,0,0,-1,1],"y":[-1,-0.333333333333333,0.333333333333333,1,1]},"edges":{"from":["data","data","raw_data","\"raw-data.xlsx\""],"to":["model","hist","data","raw_data"],"arrows":["to","to","to","to"]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"direction":"LR"}},"edges":{"smooth":false},"physics":{"stabilization":false},"interaction":{"navigationButtons":true,"hover":true}},"groups":null,"width":"100%","height":null,"idselection":{"enabled":false},"byselection":{"enabled":false},"main":{"text":"Workflow graph","style":"font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;"},"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","legend":{"width":0.2,"useGroups":false,"position":"left","ncol":1,"stepX":100,"stepY":100,"zoom":true,"nodes":{"label":["Outdated","Imported","Object","File"],"color":["#000000","#1874CD","#888888","#888888"],"shape":["dot","dot","dot","square"],"font.color":["black","black","black","black"],"font.size":[20,20,20,20],"id":[2,5,7,9]},"nodesToDataframe":true},"igraphlayout":{"type":"square"},"tooltipStay":300,"tooltipStyle":"position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);","events":{"hoverNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }","blurNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }"}},"evals":["events.hoverNode","events.blurNode"],"jsHooks":[]}</script>
 
 ---
 
@@ -78,12 +89,6 @@ make(plan)
 ## target data
 ## target hist
 ## target model
-```
-
----
-
-
-```r
 make(plan)
 ## Unloading targets from environment:
 ##   hist
@@ -91,46 +96,6 @@ make(plan)
 ##   model
 ## All targets are already up to date.
 ```
-
----
-
-<div id="htmlwidget-ac00066e7f6365b7f0d3" style="width:100%;height:504px;" class="visNetwork html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ac00066e7f6365b7f0d3">{"x":{"nodes":{"id":["\"raw-data.xlsx\"","raw_data","data","hist","model"],"label":["\"raw-data.xlsx\"","raw_data","data","hist","model"],"status":["imported","up to date","up to date","up to date","up to date"],"type":["file","object","object","object","object"],"level":[0,1,2,3,3],"font.size":[20,20,20,20,20],"color":["#1874CD","#228B22","#228B22","#228B22","#228B22"],"shape":["square","dot","dot","dot","dot"],"hover_label":["\"raw-data.xlsx\"","readxl::read_xlsx(file_in(\"raw-data.xlsx\"))","raw_data %>% mutate(Species =\nforcats::fct_inorder(Species))","ggplot(data, aes(x = Petal.Width, fill = Species)) +\ngeom_histogram()","lm(Sepal.Width ~ Petal.Width + Species, data)"],"x":[0,0,0,-1,1],"y":[-1,-0.333333333333333,0.333333333333333,1,1]},"edges":{"from":["data","data","raw_data","\"raw-data.xlsx\""],"to":["model","hist","data","raw_data"],"arrows":["to","to","to","to"]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"direction":"LR"}},"edges":{"smooth":false},"physics":{"stabilization":false},"interaction":{"navigationButtons":true,"hover":true}},"groups":null,"width":"100%","height":null,"idselection":{"enabled":false},"byselection":{"enabled":false},"main":{"text":"Workflow graph","style":"font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;"},"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","legend":{"width":0.2,"useGroups":false,"position":"left","ncol":1,"stepX":100,"stepY":100,"zoom":true,"nodes":{"label":["Up to date","Imported","Object","File"],"color":["#228B22","#1874CD","#888888","#888888"],"shape":["dot","dot","dot","square"],"font.color":["black","black","black","black"],"font.size":[20,20,20,20],"id":[1,5,7,9]},"nodesToDataframe":true},"igraphlayout":{"type":"square"},"tooltipStay":300,"tooltipStyle":"position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);","events":{"hoverNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }","blurNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }"}},"evals":["events.hoverNode","events.blurNode"],"jsHooks":[]}</script>
-
-
----
-
-
-```r
-loadd(data)
-data
-## # A tibble: 150 x 6
-##     X__1 Sepal.Length Sepal.Width Petal.Length Petal.Width
-##    &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;
-##  1    1.         5.10        3.50         1.40       0.200
-##  2    2.         4.90        3.00         1.40       0.200
-##  3    3.         4.70        3.20         1.30       0.200
-##  4    4.         4.60        3.10         1.50       0.200
-##  5    5.         5.00        3.60         1.40       0.200
-##  6    6.         5.40        3.90         1.70       0.400
-##  7    7.         4.60        3.40         1.40       0.300
-##  8    8.         5.00        3.40         1.50       0.200
-##  9    9.         4.40        2.90         1.40       0.200
-## 10   10.         4.90        3.10         1.50       0.100
-## # ... with 140 more rows, and 1 more variable: Species &lt;fct&gt;
-```
-
----
-
-
-```r
-loadd(hist, verbose = 0)
-hist
-## `stat_bin()` using `bins = 30`. Pick better value with
-## `binwidth`.
-```
-
-![](index_files/figure-html/hist-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -163,26 +128,50 @@ summary(readd(model))
 
 
 ```r
+loadd(data)
+data
+## # A tibble: 150 x 6
+##     X__1 Sepal.Length Sepal.Width Petal.Length Petal.Width
+##    &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;
+##  1    1.         5.10        3.50         1.40       0.200
+##  2    2.         4.90        3.00         1.40       0.200
+##  3    3.         4.70        3.20         1.30       0.200
+##  4    4.         4.60        3.10         1.50       0.200
+##  5    5.         5.00        3.60         1.40       0.200
+##  6    6.         5.40        3.90         1.70       0.400
+##  7    7.         4.60        3.40         1.40       0.300
+##  8    8.         5.00        3.40         1.50       0.200
+##  9    9.         4.40        2.90         1.40       0.200
+## 10   10.         4.90        3.10         1.50       0.100
+## # ... with 140 more rows, and 1 more variable: Species &lt;fct&gt;
+```
+
+---
+
+
+```r
+create_plot &lt;- function(data) {
+  ggplot(data, aes(x = Petal.Width, fill = Species)) +
+    geom_histogram()
+}
+
 plan &lt;- drake_plan(
-  
   raw_data = readxl::read_xlsx(file_in("raw-data.xlsx")),
-  
-  data = raw_data %&gt;%
-    mutate(Species = forcats::fct_inorder(Species)) %&gt;% 
+
+  data = raw_data %&gt;% 
+    mutate(Species = forcats::fct_inorder(Species)) %&gt;%
 *   select(-X__1),
   
-  hist = ggplot(data, aes(x = Petal.Width, fill = Species)) +
-*   geom_histogram(bins = 10),
+  hist = create_plot(data),
   
   model = lm(Sepal.Width ~ Petal.Width + Species, data)
-  
 )
 ```
 
 ---
 
 <div id="htmlwidget-a261f1c13aea9e511342" style="width:100%;height:504px;" class="visNetwork html-widget"></div>
-<script type="application/json" data-for="htmlwidget-a261f1c13aea9e511342">{"x":{"nodes":{"id":["\"raw-data.xlsx\"","raw_data","data","hist","model"],"label":["\"raw-data.xlsx\"","raw_data","data","hist","model"],"status":["imported","up to date","outdated","outdated","outdated"],"type":["file","object","object","object","object"],"level":[0,1,2,3,3],"font.size":[20,20,20,20,20],"color":["#1874CD","#228B22","#000000","#000000","#000000"],"shape":["square","dot","dot","dot","dot"],"hover_label":["\"raw-data.xlsx\"","readxl::read_xlsx(file_in(\"raw-data.xlsx\"))","raw_data %>% mutate(Species =\nforcats::fct_inorder(Species)) %>% select(-X__1)","ggplot(data, aes(x = Petal.Width, fill = Species)) +\ngeom_histogram(bins = 10)","lm(Sepal.Width ~ Petal.Width + Species, data)"],"x":[0,0,0,-1,1],"y":[-1,-0.333333333333333,0.333333333333333,1,1]},"edges":{"from":["data","data","raw_data","\"raw-data.xlsx\""],"to":["model","hist","data","raw_data"],"arrows":["to","to","to","to"]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"direction":"LR"}},"edges":{"smooth":false},"physics":{"stabilization":false},"interaction":{"navigationButtons":true,"hover":true}},"groups":null,"width":"100%","height":null,"idselection":{"enabled":false},"byselection":{"enabled":false},"main":{"text":"Workflow graph","style":"font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;"},"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","legend":{"width":0.2,"useGroups":false,"position":"left","ncol":1,"stepX":100,"stepY":100,"zoom":true,"nodes":{"label":["Up to date","Outdated","Imported","Object","File"],"color":["#228B22","#000000","#1874CD","#888888","#888888"],"shape":["dot","dot","dot","dot","square"],"font.color":["black","black","black","black","black"],"font.size":[20,20,20,20,20],"id":[1,2,5,7,9]},"nodesToDataframe":true},"igraphlayout":{"type":"square"},"tooltipStay":300,"tooltipStyle":"position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);","events":{"hoverNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }","blurNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }"}},"evals":["events.hoverNode","events.blurNode"],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-a261f1c13aea9e511342">{"x":{"nodes":{"id":["\"raw-data.xlsx\"","raw_data","data","hist","model"],"label":["\"raw-data.xlsx\"","raw_data","data","hist","model"],"status":["imported","up to date","outdated","outdated","outdated"],"type":["file","object","object","object","object"],"level":[0,1,2,3,3],"font.size":[20,20,20,20,20],"color":["#1874CD","#228B22","#000000","#000000","#000000"],"shape":["square","dot","dot","dot","dot"],"hover_label":["\"raw-data.xlsx\"","readxl::read_xlsx(file_in(\"raw-data.xlsx\"))","raw_data %>% mutate(Species =\nforcats::fct_inorder(Species)) %>% select(-X__1)","create_plot(data)","lm(Sepal.Width ~ Petal.Width + Species, data)"],"x":[0,0,0,-1,1],"y":[-1,-0.333333333333333,0.333333333333333,1,1]},"edges":{"from":["data","data","raw_data","\"raw-data.xlsx\""],"to":["model","hist","data","raw_data"],"arrows":["to","to","to","to"]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"direction":"LR"}},"edges":{"smooth":false},"physics":{"stabilization":false},"interaction":{"navigationButtons":true,"hover":true}},"groups":null,"width":"100%","height":null,"idselection":{"enabled":false},"byselection":{"enabled":false},"main":{"text":"Workflow graph","style":"font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;"},"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","legend":{"width":0.2,"useGroups":false,"position":"left","ncol":1,"stepX":100,"stepY":100,"zoom":true,"nodes":{"label":["Up to date","Outdated","Imported","Object","File"],"color":["#228B22","#000000","#1874CD","#888888","#888888"],"shape":["dot","dot","dot","dot","square"],"font.color":["black","black","black","black","black"],"font.size":[20,20,20,20,20],"id":[1,2,5,7,9]},"nodesToDataframe":true},"igraphlayout":{"type":"square"},"tooltipStay":300,"tooltipStyle":"position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);","events":{"hoverNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }","blurNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }"}},"evals":["events.hoverNode","events.blurNode"],"jsHooks":[]}</script>
 
 ---
 
@@ -192,21 +181,79 @@ make(plan)
 ## target data
 ## target hist
 ## target model
-readd(hist)
-```
-
-![](index_files/figure-html/make-fixed-1.png)&lt;!-- --&gt;
-
-```r
-names(readd(data))
-## [1] "Sepal.Length" "Sepal.Width"  "Petal.Length" "Petal.Width" 
-## [5] "Species"
+readd(data)
+## # A tibble: 150 x 5
+##    Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+##           &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;  
+##  1         5.10        3.50         1.40       0.200 setosa 
+##  2         4.90        3.00         1.40       0.200 setosa 
+##  3         4.70        3.20         1.30       0.200 setosa 
+##  4         4.60        3.10         1.50       0.200 setosa 
+##  5         5.00        3.60         1.40       0.200 setosa 
+##  6         5.40        3.90         1.70       0.400 setosa 
+##  7         4.60        3.40         1.40       0.300 setosa 
+##  8         5.00        3.40         1.50       0.200 setosa 
+##  9         4.40        2.90         1.40       0.200 setosa 
+## 10         4.90        3.10         1.50       0.100 setosa 
+## # ... with 140 more rows
 ```
 
 ---
 
+
+```r
+readd(hist)
+## `stat_bin()` using `bins = 30`. Pick better value with
+## `binwidth`.
+```
+
+![](index_files/figure-html/show-hist-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+create_plot &lt;- function(data) {
+  ggplot(data, aes(x = Petal.Width, fill = Species)) +
+*   geom_histogram(bins = 10)
+}
+
+plan &lt;- drake_plan(
+  raw_data = readxl::read_xlsx(file_in("raw-data.xlsx")),
+
+  data = raw_data %&gt;% 
+    mutate(Species = forcats::fct_inorder(Species)) %&gt;%
+    select(-X__1),
+  
+  hist = create_plot(data),
+  
+  model = lm(Sepal.Width ~ Petal.Width + Species, data)
+)
+```
+
+---
+
+
+```r
+make(plan)
+## Unloading targets from environment:
+##   hist
+##   data
+##   model
+## target hist
+readd(hist)
+```
+
+![](index_files/figure-html/make-fixed-hist-1.png)&lt;!-- --&gt;
+
+---
+
 <div id="htmlwidget-e2045036e7a6211c2d88" style="width:100%;height:504px;" class="visNetwork html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e2045036e7a6211c2d88">{"x":{"nodes":{"id":["\"raw-data.xlsx\"","readxl::read_xlsx","forcats::fct_inorder","mutate","select","aes","geom_histogram","ggplot","lm","raw_data","data","hist","model"],"label":["\"raw-data.xlsx\"","readxl::read_xlsx","forcats::fct_inorder","mutate","select","aes","geom_histogram","ggplot","lm","raw_data","data","hist","model"],"status":["imported","imported","imported","imported","imported","imported","imported","imported","imported","up to date","up to date","up to date","up to date"],"type":["file","function","function","function","function","function","function","function","function","object","object","object","object"],"level":[0,0,0,0,0,0,0,0,0,1,2,3,3],"font.size":[20,20,20,20,20,20,20,20,20,20,20,20,20],"color":["#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#228B22","#228B22","#228B22","#228B22"],"shape":["square","triangle","triangle","triangle","triangle","triangle","triangle","triangle","triangle","dot","dot","dot","dot"],"hover_label":["\"raw-data.xlsx\"","function (path, sheet = NULL, range = NULL, col_names = TRUE, \n    col_types = NULL, na = \"\", trim_ws = TRUE, skip = 0, n_max = Inf, \n    guess_max = min(1000, n_max)) \n{\n    read_excel_(path = path, sheet = sheet, range = range, col_names = col_n...","function (f, ordered = NA) \n{\n    f <- check_factor(f)\n    lvls_reorder(f, as.integer(f)[!duplicated(f)], ordered = ordered)\n}","function (.data, ...) \n{\n    UseMethod(\"mutate\")\n}","function (.data, ...) \n{\n    UseMethod(\"select\")\n}","function (x, y, ...) \n{\n    aes <- structure(as.list(match.call()[-1]), class = \"uneval\")\n    rename_aes(aes)\n}","function (mapping = NULL, data = NULL, stat = \"bin\", position = \"stack\", \n    ..., binwidth = NULL, bins = NULL, na.rm = FALSE, show.legend = NA, \n    inherit.aes = TRUE) \n{\n    layer(data = data, mapping = mapping, stat = stat, geom = GeomBar, \n ...","function (data = NULL, mapping = aes(), ..., environment = parent.frame()) \n{\n    UseMethod(\"ggplot\")\n}","function (formula, data, subset, weights, na.action, method = \"qr\", \n    model = TRUE, x = FALSE, y = FALSE, qr = TRUE, singular.ok = TRUE, \n    contrasts = NULL, offset, ...) \n{\n    ret.x <- x\n    ret.y <- y\n    cl <- match.call()\n    mf <- match...","readxl::read_xlsx(file_in(\"raw-data.xlsx\"))","raw_data %>% mutate(Species =\nforcats::fct_inorder(Species)) %>% select(-X__1)","ggplot(data, aes(x = Petal.Width, fill = Species)) +\ngeom_histogram(bins = 10)","lm(Sepal.Width ~ Petal.Width + Species, data)"],"x":[0,0.25,0.5,0.75,-0.25,-1,-0.75,-0.5,1,0.125,0.25,-0.625,0.5],"y":[-1,-1,-1,-1,-1,-1,-1,-1,-1,-0.333333333333333,0.333333333333333,1,1]},"edges":{"from":["\"raw-data.xlsx\"","readxl::read_xlsx","forcats::fct_inorder","mutate","raw_data","select","aes","data","data","geom_histogram","ggplot","lm"],"to":["raw_data","raw_data","data","data","data","data","hist","hist","model","hist","hist","model"],"arrows":["to","to","to","to","to","to","to","to","to","to","to","to"]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"direction":"LR"}},"edges":{"smooth":false},"physics":{"stabilization":false},"interaction":{"navigationButtons":true,"hover":true}},"groups":null,"width":"100%","height":null,"idselection":{"enabled":false},"byselection":{"enabled":false},"main":{"text":"Workflow graph","style":"font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;"},"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","legend":{"width":0.2,"useGroups":false,"position":"left","ncol":1,"stepX":100,"stepY":100,"zoom":true,"nodes":{"label":["Up to date","Imported","Object","Function","File"],"color":["#228B22","#1874CD","#888888","#888888","#888888"],"shape":["dot","dot","dot","triangle","square"],"font.color":["black","black","black","black","black"],"font.size":[20,20,20,20,20],"id":[1,5,7,8,9]},"nodesToDataframe":true},"igraphlayout":{"type":"square"},"tooltipStay":300,"tooltipStyle":"position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);","events":{"hoverNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }","blurNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }"}},"evals":["events.hoverNode","events.blurNode"],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-e2045036e7a6211c2d88">{"x":{"nodes":{"id":["aes","geom_histogram","ggplot","\"raw-data.xlsx\"","readxl::read_xlsx","forcats::fct_inorder","mutate","select","lm","create_plot","raw_data","data","hist","model"],"label":["aes","geom_histogram","ggplot","\"raw-data.xlsx\"","readxl::read_xlsx","forcats::fct_inorder","mutate","select","lm","create_plot","raw_data","data","hist","model"],"status":["imported","imported","imported","imported","imported","imported","imported","imported","imported","imported","up to date","up to date","up to date","up to date"],"type":["function","function","function","file","function","function","function","function","function","function","object","object","object","object"],"level":[0,0,0,0,0,0,0,0,0,1,2,3,4,4],"font.size":[20,20,20,20,20,20,20,20,20,20,20,20,20,20],"color":["#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#228B22","#228B22","#228B22","#228B22"],"shape":["triangle","triangle","triangle","square","triangle","triangle","triangle","triangle","triangle","triangle","dot","dot","dot","dot"],"hover_label":["function (x, y, ...) \n{\n    aes <- structure(as.list(match.call()[-1]), class = \"uneval\")\n    rename_aes(aes)\n}","function (mapping = NULL, data = NULL, stat = \"bin\", position = \"stack\", \n    ..., binwidth = NULL, bins = NULL, na.rm = FALSE, show.legend = NA, \n    inherit.aes = TRUE) \n{\n    layer(data = data, mapping = mapping, stat = stat, geom = GeomBar, \n ...","function (data = NULL, mapping = aes(), ..., environment = parent.frame()) \n{\n    UseMethod(\"ggplot\")\n}","\"raw-data.xlsx\"","function (path, sheet = NULL, range = NULL, col_names = TRUE, \n    col_types = NULL, na = \"\", trim_ws = TRUE, skip = 0, n_max = Inf, \n    guess_max = min(1000, n_max)) \n{\n    read_excel_(path = path, sheet = sheet, range = range, col_names = col_n...","function (f, ordered = NA) \n{\n    f <- check_factor(f)\n    lvls_reorder(f, as.integer(f)[!duplicated(f)], ordered = ordered)\n}","function (.data, ...) \n{\n    UseMethod(\"mutate\")\n}","function (.data, ...) \n{\n    UseMethod(\"select\")\n}","function (formula, data, subset, weights, na.action, method = \"qr\", \n    model = TRUE, x = FALSE, y = FALSE, qr = TRUE, singular.ok = TRUE, \n    contrasts = NULL, offset, ...) \n{\n    ret.x <- x\n    ret.y <- y\n    cl <- match.call()\n    mf <- match...","function (data) \n{\n    ggplot(data, aes(x = Petal.Width, fill = Species)) + geom_histogram(bins = 10)\n}","readxl::read_xlsx(file_in(\"raw-data.xlsx\"))","raw_data %>% mutate(Species =\nforcats::fct_inorder(Species)) %>% select(-X__1)","create_plot(data)","lm(Sepal.Width ~ Petal.Width + Species, data)"],"x":[-1,-0.75,-0.5,-0.25,0,0.25,0.5,0.75,1,-0.75,-0.125,0.375,-0.125,0.625],"y":[-1,-1,-1,-1,-1,-1,-1,-1,-1,-0.333333333333333,-0.333333333333333,0.333333333333333,1,1]},"edges":{"from":["aes","geom_histogram","ggplot","\"raw-data.xlsx\"","readxl::read_xlsx","forcats::fct_inorder","mutate","raw_data","select","create_plot","data","data","lm"],"to":["create_plot","create_plot","create_plot","raw_data","raw_data","data","data","data","data","hist","hist","model","model"],"arrows":["to","to","to","to","to","to","to","to","to","to","to","to","to"]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"direction":"LR"}},"edges":{"smooth":false},"physics":{"stabilization":false},"interaction":{"navigationButtons":true,"hover":true}},"groups":null,"width":"100%","height":null,"idselection":{"enabled":false},"byselection":{"enabled":false},"main":{"text":"Workflow graph","style":"font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;"},"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","legend":{"width":0.2,"useGroups":false,"position":"left","ncol":1,"stepX":100,"stepY":100,"zoom":true,"nodes":{"label":["Up to date","Imported","Object","Function","File"],"color":["#228B22","#1874CD","#888888","#888888","#888888"],"shape":["dot","dot","dot","triangle","square"],"font.color":["black","black","black","black","black"],"font.size":[20,20,20,20,20],"id":[1,5,7,8,9]},"nodesToDataframe":true},"igraphlayout":{"type":"square"},"tooltipStay":300,"tooltipStyle":"position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);","events":{"hoverNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }","blurNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }"}},"evals":["events.hoverNode","events.blurNode"],"jsHooks":[]}</script>
+
+---
+
+class: inverse, middle, center
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({

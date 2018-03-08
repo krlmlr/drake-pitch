@@ -32,27 +32,60 @@ From Jenny's presentation: https://github.com/jennybc/what-they-forgot
 
 ---
 
-```{r library, include = FALSE}
-library(drake)
-library(tidyverse)
+```{r cleanup, include = FALSE}
 unlink(".drake", recursive = TRUE)
 ```
 
-```{r plan}
+```{r plan-base-vis, include = FALSE}
 library(drake)
 library(tidyverse)
+create_plot <- function(data) {
+  ggplot(data, aes(x = Petal.Width, fill = Species)) +
+    geom_histogram()
+}
+
 plan <- drake_plan(
+  raw_data = readxl::read_xlsx(file_in("raw-data.xlsx")),
+
+  data = mutate(raw_data, Species = forcats::fct_inorder(Species)),
   
+  hist = create_plot(data),
+  
+  model = lm(Sepal.Width ~ Petal.Width + Species, data)
+)
+```
+
+```{r vis-intro, echo = FALSE}
+config <- drake_config(plan, verbose = FALSE)
+vis_drake_graph(
+  config,
+  from = file_store("raw-data.xlsx"), mode = "out",
+  build_times = "none", ncol_legend = 0,
+  width = "100%"
+)
+```
+
+
+---
+
+```{r plan-base}
+library(drake)
+library(tidyverse)
+
+create_plot <- function(data) {
+  ggplot(data, aes(x = Petal.Width, fill = Species)) +
+    geom_histogram()
+}
+
+plan <- drake_plan(
   raw_data = readxl::read_xlsx(file_in("raw-data.xlsx")),
 
   data = raw_data %>%
     mutate(Species = forcats::fct_inorder(Species)),
   
-  hist = ggplot(data, aes(x = Petal.Width, fill = Species)) +
-    geom_histogram(),
+  hist = create_plot(data),
   
   model = lm(Sepal.Width ~ Petal.Width + Species, data)
-  
 )
 
 plan
@@ -74,39 +107,7 @@ vis_drake_graph(
 
 ```{r make}
 make(plan)
-```
-
----
-
-```{r make-again}
 make(plan)
-```
-
----
-
-```{r vis-done, echo = FALSE}
-config <- drake_config(plan, verbose = FALSE)
-vis_drake_graph(
-  config,
-  from = file_store("raw-data.xlsx"), mode = "out",
-  build_times = "none", full_legend = FALSE,
-  width = "100%"
-)
-```
-
-
----
-
-```{r data}
-loadd(data)
-data
-```
-
----
-
-```{r hist, fig.height = 3}
-loadd(hist, verbose = 0)
-hist
 ```
 
 ---
@@ -117,20 +118,29 @@ summary(readd(model))
 
 ---
 
+```{r data}
+loadd(data)
+data
+```
+
+---
+
 ```{r better-plan}
+create_plot <- function(data) {
+  ggplot(data, aes(x = Petal.Width, fill = Species)) +
+    geom_histogram()
+}
+
 plan <- drake_plan(
-  
   raw_data = readxl::read_xlsx(file_in("raw-data.xlsx")),
-  
-  data = raw_data %>%
-    mutate(Species = forcats::fct_inorder(Species)) %>% 
+
+  data = raw_data %>% 
+    mutate(Species = forcats::fct_inorder(Species)) %>%
     select(-X__1), #<<
   
-  hist = ggplot(data, aes(x = Petal.Width, fill = Species)) +
-    geom_histogram(bins = 10), #<<
+  hist = create_plot(data),
   
   model = lm(Sepal.Width ~ Petal.Width + Species, data)
-  
 )
 ```
 
@@ -150,8 +160,41 @@ vis_drake_graph(
 
 ```{r make-fixed, fig.height = 3}
 make(plan)
+readd(data)
+```
+
+---
+
+```{r show-hist, fig.height = 3}
 readd(hist)
-names(readd(data))
+```
+
+---
+
+```{r best-plan}
+create_plot <- function(data) {
+  ggplot(data, aes(x = Petal.Width, fill = Species)) +
+    geom_histogram(bins = 10) #<<
+}
+
+plan <- drake_plan(
+  raw_data = readxl::read_xlsx(file_in("raw-data.xlsx")),
+
+  data = raw_data %>% 
+    mutate(Species = forcats::fct_inorder(Species)) %>%
+    select(-X__1),
+  
+  hist = create_plot(data),
+  
+  model = lm(Sepal.Width ~ Petal.Width + Species, data)
+)
+```
+
+---
+
+```{r make-fixed-hist, fig.height = 3}
+make(plan)
+readd(hist)
 ```
 
 ---
@@ -164,3 +207,7 @@ vis_drake_graph(
   width = "100%"
 )
 ```
+
+---
+
+class: inverse, middle, center
