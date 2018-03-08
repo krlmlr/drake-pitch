@@ -1,8 +1,8 @@
 ---
-title: "The [drake](https://github.com/ropensci/drake) R package"
+title: "Reproducible workflows with the [drake](https://github.com/ropensci/drake) R package"
 subtitle: "make for R"
 author: "Kirill Müller"
-date: "2018-02-01, rstudio::conf(), San Diego"
+date: "`r Sys.Date()`, DataCamp audition video"
 output:
   xaringan::moon_reader:
     output_dir: "docs"
@@ -19,9 +19,12 @@ options(width = 65)
 knit_print.data.frame <- function(x, ...) paste0(format(as_tibble(x)), collapse = "\n")
 knitr::opts_chunk$set(collapse = TRUE)
 knitr::opts_chunk$set(fig.path = "index_files/figure-html/")
+
+pkgconfig::set_config_in("drake::strings_in_dots" = "literals", .in = globalenv())
 ```
 
 background-image: url(images/humane.png)
+class: inverse
 
 ???
 
@@ -40,7 +43,7 @@ library(drake)
 library(tidyverse)
 plan <- drake_plan(
   
-  raw_data = readxl::read_xlsx("raw-data.xlsx"),
+  raw_data = readxl::read_xlsx(file_in("raw-data.xlsx")),
 
   data = raw_data %>%
     mutate(Species = forcats::fct_inorder(Species)),
@@ -51,6 +54,8 @@ plan <- drake_plan(
   model = lm(Sepal.Width ~ Petal.Width + Species, data)
   
 )
+
+plan
 ```
 
 ---
@@ -59,7 +64,8 @@ plan <- drake_plan(
 config <- drake_config(plan, verbose = FALSE)
 vis_drake_graph(
   config,
-  targets_only = TRUE, build_times = FALSE, full_legend = FALSE,
+  from = file_store("raw-data.xlsx"), mode = "out",
+  build_times = "none", full_legend = FALSE,
   width = "100%"
 )
 ```
@@ -82,7 +88,8 @@ make(plan)
 config <- drake_config(plan, verbose = FALSE)
 vis_drake_graph(
   config,
-  targets_only = TRUE, build_times = FALSE, full_legend = FALSE,
+  from = file_store("raw-data.xlsx"), mode = "out",
+  build_times = "none", full_legend = FALSE,
   width = "100%"
 )
 ```
@@ -91,13 +98,13 @@ vis_drake_graph(
 ---
 
 ```{r data}
-loadd(data, verbose = 0)
+loadd(data)
 data
 ```
 
 ---
 
-```{r hist}
+```{r hist, fig.height = 3}
 loadd(hist, verbose = 0)
 hist
 ```
@@ -105,9 +112,7 @@ hist
 ---
 
 ```{r model}
-loadd(model, verbose = 0)
-model
-summary(model)
+summary(readd(model))
 ```
 
 ---
@@ -115,7 +120,7 @@ summary(model)
 ```{r better-plan}
 plan <- drake_plan(
   
-  raw_data = readxl::read_xlsx("raw-data.xlsx"),
+  raw_data = readxl::read_xlsx(file_in("raw-data.xlsx")),
   
   data = raw_data %>%
     mutate(Species = forcats::fct_inorder(Species)) %>% 
@@ -135,15 +140,27 @@ plan <- drake_plan(
 config <- drake_config(plan, verbose = FALSE)
 vis_drake_graph(
   config,
-  targets_only = TRUE, build_times = FALSE, full_legend = FALSE,
+  from = file_store("raw-data.xlsx"), mode = "out",
+  build_times = "none", full_legend = FALSE,
   width = "100%"
 )
 ```
 
 ---
 
-```{r make-fixed}
-make(plan, verbose = 0)
-loadd(hist, verbose = 0)
-hist
+```{r make-fixed, fig.height = 3}
+make(plan)
+readd(hist)
+names(readd(data))
+```
+
+---
+
+```{r vis-full, echo = FALSE}
+config <- drake_config(plan, verbose = FALSE)
+vis_drake_graph(
+  config,
+  build_times = "none", full_legend = FALSE,
+  width = "100%"
+)
 ```
