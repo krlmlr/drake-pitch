@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The drake R package</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Kirill Müller" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <link href="libs/vis/vis.css" rel="stylesheet" />
+    <script src="libs/vis/vis.min.js"></script>
+    <script src="libs/visNetwork-binding/visNetwork.js"></script>
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# The <a href="https://github.com/ropensci/drake">drake</a> R package
+## make for R
+### Kirill Müller
+### 2018-02-01, rstudio::conf(), San Diego
+
+---
+
+
+
+
+background-image: url(images/humane.png)
+
+???
+
+From Jenny's presentation: https://github.com/jennybc/what-they-forgot
+
+---
+
+
+
+
+```r
+library(drake)
+library(tidyverse)
+plan &lt;- drake_plan(
+  
+  raw_data = readxl::read_xlsx("raw-data.xlsx"),
+
+  data = raw_data %&gt;%
+    mutate(Species = forcats::fct_inorder(Species)),
+  
+  hist = ggplot(data, aes(x = Petal.Width, fill = Species)) +
+    geom_histogram(),
+  
+  model = lm(Sepal.Width ~ Petal.Width + Species, data)
+  
+)
+```
+
+---
+
+<div id="htmlwidget-ec897849c5c50a6f7846" style="width:100%;height:504px;" class="visNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ec897849c5c50a6f7846">{"x":{"nodes":{"id":["raw_data","data","hist","model"],"label":["raw_data","data","hist","model"],"status":["outdated","outdated","outdated","outdated"],"type":["object","object","object","object"],"level":[0,1,2,2],"font.size":[20,20,20,20],"color":["#000000","#000000","#000000","#000000"],"shape":["dot","dot","dot","dot"],"hover_label":["readxl::read_xlsx('raw-data.xlsx')","raw_data %>% mutate(Species =\nforcats::fct_inorder(Species))","ggplot(data, aes(x = Petal.Width, fill = Species)) +\ngeom_histogram()","lm(Sepal.Width ~ Petal.Width + Species, data)"],"x":[0,0,-1,1],"y":[-1,0,1,1]},"edges":{"from":["raw_data","data","data"],"to":["data","hist","model"],"arrows":["to","to","to"]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"direction":"LR"}},"edges":{"smooth":false},"physics":{"stabilization":false},"interaction":{"navigationButtons":true,"hover":true}},"groups":null,"width":"100%","height":null,"idselection":{"enabled":false},"byselection":{"enabled":false},"main":{"text":"Workflow graph","style":"font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;"},"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","legend":{"width":0.2,"useGroups":false,"position":"left","ncol":1,"stepX":100,"stepY":100,"zoom":true,"nodes":{"label":["Outdated"],"color":["#000000"],"shape":["dot"],"font.color":["black"],"font.size":[20],"id":[2]},"nodesToDataframe":true},"igraphlayout":{"type":"square"},"tooltipStay":300,"tooltipStyle":"position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);","events":{"hoverNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }","blurNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }"}},"evals":["events.hoverNode","events.blurNode"],"jsHooks":[]}</script>
+
+---
+
+
+```r
+make(plan)
+## cache /home/muelleki/git/R/drake-pitch/.drake
+## connect 4 imports: check_local_env, knit_print.data.frame, con...
+## connect 4 targets: raw_data, data, hist, model
+## check 10 items: 'raw-data.xlsx', aes, forcats::fct_inorder, ge...
+## check 1 item: raw_data
+## target raw_data
+## check 1 item: data
+## target data
+## check 2 items: hist, model
+## unload 1 item: raw_data
+## target hist
+## target model
+```
+
+---
+
+
+```r
+make(plan)
+## cache /home/muelleki/git/R/drake-pitch/.drake
+## Unloading targets from environment:
+##   hist
+##   data
+##   model
+## connect 4 imports: check_local_env, knit_print.data.frame, con...
+## connect 4 targets: raw_data, data, hist, model
+## check 10 items: 'raw-data.xlsx', aes, forcats::fct_inorder, ge...
+## check 1 item: raw_data
+## check 1 item: data
+## check 2 items: hist, model
+## All targets are already up to date.
+```
+
+---
+
+<div id="htmlwidget-ac00066e7f6365b7f0d3" style="width:100%;height:504px;" class="visNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ac00066e7f6365b7f0d3">{"x":{"nodes":{"id":["raw_data","data","hist","model"],"label":["raw_data","data","hist","model"],"status":["up to date","up to date","up to date","up to date"],"type":["object","object","object","object"],"level":[0,1,2,2],"font.size":[20,20,20,20],"color":["#228B22","#228B22","#228B22","#228B22"],"shape":["dot","dot","dot","dot"],"hover_label":["readxl::read_xlsx('raw-data.xlsx')","raw_data %>% mutate(Species =\nforcats::fct_inorder(Species))","ggplot(data, aes(x = Petal.Width, fill = Species)) +\ngeom_histogram()","lm(Sepal.Width ~ Petal.Width + Species, data)"],"x":[0,0,-1,1],"y":[-1,0,1,1]},"edges":{"from":["raw_data","data","data"],"to":["data","hist","model"],"arrows":["to","to","to"]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"direction":"LR"}},"edges":{"smooth":false},"physics":{"stabilization":false},"interaction":{"navigationButtons":true,"hover":true}},"groups":null,"width":"100%","height":null,"idselection":{"enabled":false},"byselection":{"enabled":false},"main":{"text":"Workflow graph","style":"font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;"},"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","legend":{"width":0.2,"useGroups":false,"position":"left","ncol":1,"stepX":100,"stepY":100,"zoom":true,"nodes":{"label":["Up to date"],"color":["#228B22"],"shape":["dot"],"font.color":["black"],"font.size":[20],"id":[1]},"nodesToDataframe":true},"igraphlayout":{"type":"square"},"tooltipStay":300,"tooltipStyle":"position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);","events":{"hoverNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }","blurNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }"}},"evals":["events.hoverNode","events.blurNode"],"jsHooks":[]}</script>
+
+
+---
+
+
+```r
+loadd(data, verbose = 0)
+data
+## # A tibble: 150 x 6
+##     X__1 Sepal.Length Sepal.Width Petal.Length Petal.Width
+##    &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;
+##  1  1.00         5.10        3.50         1.40       0.200
+##  2  2.00         4.90        3.00         1.40       0.200
+##  3  3.00         4.70        3.20         1.30       0.200
+##  4  4.00         4.60        3.10         1.50       0.200
+##  5  5.00         5.00        3.60         1.40       0.200
+##  6  6.00         5.40        3.90         1.70       0.400
+##  7  7.00         4.60        3.40         1.40       0.300
+##  8  8.00         5.00        3.40         1.50       0.200
+##  9  9.00         4.40        2.90         1.40       0.200
+## 10 10.0          4.90        3.10         1.50       0.100
+## # ... with 140 more rows, and 1 more variable: Species &lt;fct&gt;
+```
+
+---
+
+
+```r
+loadd(hist, verbose = 0)
+hist
+## `stat_bin()` using `bins = 30`. Pick better value with
+## `binwidth`.
+```
+
+![](index_files/figure-html/hist-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+loadd(model, verbose = 0)
+model
+## 
+## Call:
+## lm(formula = Sepal.Width ~ Petal.Width + Species, data = data)
+## 
+## Coefficients:
+##       (Intercept)        Petal.Width  Speciesversicolor  
+##             3.236              0.781             -1.501  
+##  Speciesvirginica  
+##            -1.844
+summary(model)
+## 
+## Call:
+## lm(formula = Sepal.Width ~ Petal.Width + Species, data = data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.17017 -0.19105  0.00793  0.19173  0.85172 
+## 
+## Coefficients:
+##                   Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)        3.23587    0.05194  62.295  &lt; 2e-16 ***
+## Petal.Width        0.78102    0.12121   6.443 1.59e-09 ***
+## Speciesversicolor -1.50150    0.14407 -10.422  &lt; 2e-16 ***
+## Speciesvirginica  -1.84421    0.22399  -8.234 9.35e-14 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.3008 on 146 degrees of freedom
+## Multiple R-squared:  0.5335,	Adjusted R-squared:  0.5239 
+## F-statistic: 55.65 on 3 and 146 DF,  p-value: &lt; 2.2e-16
+```
+
+---
+
+
+```r
+plan &lt;- drake_plan(
+  
+  raw_data = readxl::read_xlsx("raw-data.xlsx"),
+  
+  data = raw_data %&gt;%
+    mutate(Species = forcats::fct_inorder(Species)) %&gt;% 
+*   select(-X__1),
+  
+  hist = ggplot(data, aes(x = Petal.Width, fill = Species)) +
+*   geom_histogram(bins = 10),
+  
+  model = lm(Sepal.Width ~ Petal.Width + Species, data)
+  
+)
+```
+
+---
+
+<div id="htmlwidget-a261f1c13aea9e511342" style="width:100%;height:504px;" class="visNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a261f1c13aea9e511342">{"x":{"nodes":{"id":["raw_data","data","hist","model"],"label":["raw_data","data","hist","model"],"status":["up to date","outdated","outdated","outdated"],"type":["object","object","object","object"],"level":[0,1,2,2],"font.size":[20,20,20,20],"color":["#228B22","#000000","#000000","#000000"],"shape":["dot","dot","dot","dot"],"hover_label":["readxl::read_xlsx('raw-data.xlsx')","raw_data %>% mutate(Species =\nforcats::fct_inorder(Species)) %>% select(-X__1)","ggplot(data, aes(x = Petal.Width, fill = Species)) +\ngeom_histogram(bins = 10)","lm(Sepal.Width ~ Petal.Width + Species, data)"],"x":[0,0,-1,1],"y":[-1,0,1,1]},"edges":{"from":["raw_data","data","data"],"to":["data","hist","model"],"arrows":["to","to","to"]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"direction":"LR"}},"edges":{"smooth":false},"physics":{"stabilization":false},"interaction":{"navigationButtons":true,"hover":true}},"groups":null,"width":"100%","height":null,"idselection":{"enabled":false},"byselection":{"enabled":false},"main":{"text":"Workflow graph","style":"font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;"},"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","legend":{"width":0.2,"useGroups":false,"position":"left","ncol":1,"stepX":100,"stepY":100,"zoom":true,"nodes":{"label":["Up to date","Outdated"],"color":["#228B22","#000000"],"shape":["dot","dot"],"font.color":["black","black"],"font.size":[20,20],"id":[1,2]},"nodesToDataframe":true},"igraphlayout":{"type":"square"},"tooltipStay":300,"tooltipStyle":"position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);","events":{"hoverNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }","blurNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }"}},"evals":["events.hoverNode","events.blurNode"],"jsHooks":[]}</script>
+
+---
+
+
+```r
+make(plan, verbose = 0)
+loadd(hist, verbose = 0)
+hist
+```
+
+![](index_files/figure-html/make-fixed-1.png)&lt;!-- --&gt;
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+});
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
