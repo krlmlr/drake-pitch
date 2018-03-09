@@ -51,7 +51,7 @@ plan <- drake_plan(
   
   hist = create_plot(data),
   
-  model = lm(Sepal.Width ~ Petal.Width + Species, data)
+  fit = lm(Sepal.Width ~ Petal.Width + Species, data)
 )
 ```
 
@@ -85,7 +85,7 @@ plan <- drake_plan(
   
   hist = create_plot(data),
   
-  model = lm(Sepal.Width ~ Petal.Width + Species, data)
+  fit = lm(Sepal.Width ~ Petal.Width + Species, data)
 )
 
 plan
@@ -93,33 +93,15 @@ plan
 
 ---
 
-```{r vis-new, echo = FALSE}
-config <- drake_config(plan, verbose = FALSE)
-vis_drake_graph(
-  config,
-  from = file_store("raw-data.xlsx"), mode = "out",
-  build_times = "none", full_legend = FALSE,
-  width = "100%"
-)
-```
-
----
-
 ```{r make}
 make(plan)
-make(plan)
-```
-
----
-
-```{r model}
-summary(readd(model))
+summary(readd(fit))
 ```
 
 ---
 
 ```{r data}
-loadd(data)
+loadd(data, hist)
 data
 ```
 
@@ -140,7 +122,7 @@ plan <- drake_plan(
   
   hist = create_plot(data),
   
-  model = lm(Sepal.Width ~ Petal.Width + Species, data)
+  fit = lm(Sepal.Width ~ Petal.Width + Species, data)
 )
 ```
 
@@ -158,14 +140,14 @@ vis_drake_graph(
 
 ---
 
-```{r make-fixed, fig.height = 3}
+```{r make-fixed}
 make(plan)
 readd(data)
 ```
 
 ---
 
-```{r show-hist, fig.height = 3}
+```{r show-hist}
 readd(hist)
 ```
 
@@ -174,7 +156,8 @@ readd(hist)
 ```{r best-plan}
 create_plot <- function(data) {
   ggplot(data, aes(x = Petal.Width, fill = Species)) +
-    geom_histogram(bins = 10) #<<
+    geom_histogram(binwidth = 0.25) + #<<
+    theme_bw(20) #<<
 }
 
 plan <- drake_plan(
@@ -186,13 +169,18 @@ plan <- drake_plan(
   
   hist = create_plot(data),
   
-  model = lm(Sepal.Width ~ Petal.Width + Species, data)
+  fit = lm(Sepal.Width ~ Petal.Width + Species, data)
 )
 ```
 
 ---
 
-```{r make-fixed-hist, fig.height = 3}
+```{r cleanup-env, include = FALSE}
+rm(fit, hist, data)
+```
+
+
+```{r make-fixed-hist}
 make(plan)
 readd(hist)
 ```
