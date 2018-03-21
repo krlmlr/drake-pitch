@@ -23,12 +23,19 @@ knitr::opts_chunk$set(fig.path = "index_files/figure-html/")
 pkgconfig::set_config_in("drake::strings_in_dots" = "literals", .in = globalenv())
 ```
 
-background-image: url(images/humane.png)
-class: inverse
+# Why *drake*?
 
-???
+1. *rmarkdown* code chunks too heavy?
 
-From Jenny's presentation: https://github.com/jennybc/what-they-forgot
+2. too many slow R scripts?
+
+.right[
+
+# Save time, ensure reproducibility!
+
+## data analysis = set of data transformations
+
+]
 
 ---
 
@@ -51,7 +58,13 @@ plan <- drake_plan(
   
   hist = create_plot(data),
   
-  fit = lm(Sepal.Width ~ Petal.Width + Species, data)
+  fit = lm(Sepal.Width ~ Petal.Width + Species, data),
+  
+  rmarkdown::render(
+    knitr_in("report.Rmd"),
+    output_file = file_out("report.pdf"),
+    quiet = TRUE
+  )
 )
 ```
 
@@ -64,7 +77,6 @@ vis_drake_graph(
   width = "100%"
 )
 ```
-
 
 ---
 
@@ -79,22 +91,52 @@ create_plot <- function(data) {
 
 plan <- drake_plan(
   raw_data = readxl::read_xlsx(file_in("raw-data.xlsx")),
-
+  
   data = raw_data %>%
     mutate(Species = forcats::fct_inorder(Species)),
   
   hist = create_plot(data),
   
-  fit = lm(Sepal.Width ~ Petal.Width + Species, data)
+  fit = lm(Sepal.Width ~ Petal.Width + Species, data),
+  
+  rmarkdown::render(
+    knitr_in("report.Rmd"),
+    output_file = file_out("report.pdf"),
+    quiet = TRUE
+  )
 )
+```
 
+---
+
+```{r plan-base-show}
 plan
 ```
 
 ---
 
+.pull-left[
+
 ```{r make}
 make(plan)
+```
+
+]
+
+.pull-right[
+
+```{r make-report, echo = FALSE}
+magick::image_read("report.pdf", density = 300) %>%
+  magick::image_resize(magick::geometry_size_percent(50)) %>%
+  magick::image_border() %>%
+  magick::image_draw(res = 300)
+```
+
+]
+
+---
+
+```{r fit}
 summary(readd(fit))
 ```
 
@@ -122,7 +164,13 @@ plan <- drake_plan(
   
   hist = create_plot(data),
   
-  fit = lm(Sepal.Width ~ Petal.Width + Species, data)
+  fit = lm(Sepal.Width ~ Petal.Width + Species, data),
+  
+  rmarkdown::render(
+    knitr_in("report.Rmd"),
+    output_file = file_out("report.pdf"),
+    quiet = TRUE
+  )
 )
 ```
 
@@ -157,7 +205,7 @@ readd(hist)
 create_plot <- function(data) {
   ggplot(data, aes(x = Petal.Width, fill = Species)) +
     geom_histogram(binwidth = 0.25) + #<<
-    theme_bw(20) #<<
+    theme_gray(20) #<<
 }
 
 plan <- drake_plan(
@@ -169,7 +217,13 @@ plan <- drake_plan(
   
   hist = create_plot(data),
   
-  fit = lm(Sepal.Width ~ Petal.Width + Species, data)
+  fit = lm(Sepal.Width ~ Petal.Width + Species, data),
+  
+  rmarkdown::render(
+    knitr_in("report.Rmd"),
+    output_file = file_out("report.pdf"),
+    quiet = TRUE
+  )
 )
 ```
 
@@ -179,11 +233,24 @@ plan <- drake_plan(
 rm(fit, hist, data)
 ```
 
+.pull-left[
 
 ```{r make-fixed-hist}
 make(plan)
-readd(hist)
 ```
+
+]
+
+.pull-right[
+
+```{r make-report-fixed-hist, echo = FALSE}
+magick::image_read("report.pdf", density = 300) %>%
+  magick::image_resize(magick::geometry_size_percent(50)) %>%
+  magick::image_border() %>%
+  magick::image_draw(res = 300)
+```
+
+]
 
 ---
 

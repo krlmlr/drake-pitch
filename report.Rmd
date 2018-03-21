@@ -1,0 +1,28 @@
+---
+title: "Report"
+author: "Kirill Müller"
+date: "March 20, 2018"
+output: pdf_document
+---
+
+## The model
+
+```{r opts-width-on, include=FALSE}
+old <- options(width = 76)
+```
+
+
+```{r report-fit}
+loadd(fit, hist)
+fit
+```
+
+## A plot
+
+```{r report-hist}
+hist
+```
+
+```{r opts-width-off, include=FALSE}
+options(old)
+```
