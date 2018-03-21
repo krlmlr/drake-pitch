@@ -25,15 +25,18 @@ pkgconfig::set_config_in("drake::strings_in_dots" = "literals", .in = globalenv(
 
 # Why *drake*?
 
+1. too many slow R scripts?
+
 1. *rmarkdown* code chunks too heavy?
 
-2. too many slow R scripts?
+
+&nbsp;
 
 .right[
 
-# Save time, ensure reproducibility!
+# Save time and ensure reproducibility!
 
-## data analysis = set of data transformations
+## data analysis → set of data transformations
 
 ]
 
@@ -70,11 +73,14 @@ plan <- drake_plan(
 
 ```{r vis-intro, echo = FALSE}
 config <- drake_config(plan, verbose = FALSE)
+# Adding report.Rmd to the set of from nodes didn't work with xaringan/remark.js
+# No end of slide marker was detected
 vis_drake_graph(
   config,
   from = file_store("raw-data.xlsx"), mode = "out",
   build_times = "none", ncol_legend = 0,
-  width = "100%"
+  width = "100%",
+  hover = FALSE
 )
 ```
 
@@ -182,7 +188,8 @@ vis_drake_graph(
   config,
   from = file_store("raw-data.xlsx"), mode = "out",
   build_times = "none", full_legend = FALSE,
-  width = "100%"
+  width = "100%",
+  hover = FALSE
 )
 ```
 
@@ -259,7 +266,8 @@ config <- drake_config(plan, verbose = FALSE)
 vis_drake_graph(
   config,
   build_times = "none", full_legend = FALSE,
-  width = "100%"
+  width = "100%",
+  hover = FALSE
 )
 ```
 
