@@ -2,7 +2,7 @@
 title: "Reproducible workflows with the [drake](https://github.com/ropensci/drake) R package"
 subtitle: "make for R"
 author: "Kirill Müller"
-date: "`r Sys.Date()`, DataCamp audition video"
+date: "`r Sys.Date()`"
 output:
   xaringan::moon_reader:
     output_dir: "docs"
@@ -63,7 +63,7 @@ plan <- drake_plan(
   
   fit = lm(Sepal.Width ~ Petal.Width + Species, data),
   
-  rmarkdown::render(
+  report = rmarkdown::render(
     knitr_in("report.Rmd"),
     output_file = file_out("report.pdf"),
     quiet = TRUE
@@ -105,7 +105,7 @@ plan <- drake_plan(
   
   fit = lm(Sepal.Width ~ Petal.Width + Species, data),
   
-  rmarkdown::render(
+  report = rmarkdown::render(
     knitr_in("report.Rmd"),
     output_file = file_out("report.pdf"),
     quiet = TRUE
@@ -166,13 +166,13 @@ plan <- drake_plan(
 
   data = raw_data %>% 
     mutate(Species = forcats::fct_inorder(Species)) %>%
-    select(-X__1), #<<
+    select(Sepal.Length:Species), #<<
   
   hist = create_plot(data),
   
   fit = lm(Sepal.Width ~ Petal.Width + Species, data),
   
-  rmarkdown::render(
+  report = rmarkdown::render(
     knitr_in("report.Rmd"),
     output_file = file_out("report.pdf"),
     quiet = TRUE
@@ -220,13 +220,13 @@ plan <- drake_plan(
 
   data = raw_data %>% 
     mutate(Species = forcats::fct_inorder(Species)) %>%
-    select(-X__1),
+    select(Sepal.Length:Species),
   
   hist = create_plot(data),
   
   fit = lm(Sepal.Width ~ Petal.Width + Species, data),
   
-  rmarkdown::render(
+  report = rmarkdown::render(
     knitr_in("report.Rmd"),
     output_file = file_out("report.pdf"),
     quiet = TRUE
