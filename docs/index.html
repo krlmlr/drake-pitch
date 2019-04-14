@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
   <head>
     <title>Reproducible workflows with the drake R package</title>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <meta name="author" content="Kirill Müller" />
+    <meta name="date" content="2019-04-14" />
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
     <script src="libs/htmlwidgets/htmlwidgets.js"></script>
@@ -18,7 +19,7 @@ class: center, middle, inverse, title-slide
 # Reproducible workflows with the <a href="https://github.com/ropensci/drake">drake</a> R package
 ## make for R
 ### Kirill Müller
-### 2018-03-21, DataCamp audition video
+### 2019-04-14
 
 ---
 
@@ -49,7 +50,7 @@ class: center, middle, inverse, title-slide
 
 
 <div id="htmlwidget-ec897849c5c50a6f7846" style="width:100%;height:504px;" class="visNetwork html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ec897849c5c50a6f7846">{"x":{"nodes":{"id":["\"raw-data.xlsx\"","raw_data","data","fit","hist","\"report.pdf\""],"label":["\"raw-data.xlsx\"","raw_data","data","fit","hist","\"report.pdf\""],"status":["imported","outdated","outdated","outdated","outdated","outdated"],"type":["file","object","object","object","object","file"],"level":[0,1,2,3,3,4],"font.size":[20,20,20,20,20,20],"color":["#1874CD","#000000","#000000","#000000","#000000","#000000"],"shape":["square","dot","dot","dot","dot","square"],"hover_label":["\"raw-data.xlsx\"","readxl::read_xlsx(file_in(\"raw-data.xlsx\"))","mutate(raw_data, Species = forcats::fct_inorder(Species))","lm(Sepal.Width ~ Petal.Width + Species, data)","create_plot(data)","rmarkdown::render(knitr_in(\"report.Rmd\"), output_file =\nfile_out(\"report.pdf\"), quiet = TRUE)"],"x":[0,0,0,-1,1,0],"y":[-1,-0.5,0,0.5,0.5,1]},"edges":{"from":["hist","fit","data","data","raw_data","\"raw-data.xlsx\""],"to":["\"report.pdf\"","\"report.pdf\"","hist","fit","data","raw_data"],"arrows":["to","to","to","to","to","to"]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"direction":"LR"}},"edges":{"smooth":false},"physics":{"stabilization":false},"interaction":{"navigationButtons":true}},"groups":null,"width":"100%","height":null,"idselection":{"enabled":false},"byselection":{"enabled":false},"main":{"text":"Workflow graph","style":"font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;"},"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","igraphlayout":{"type":"square"},"tooltipStay":300,"tooltipStyle":"position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-ec897849c5c50a6f7846">{"x":{"nodes":{"id":["data","fit","hist","p-OJQXOLLEMF2GCLTYNRZXQ","p-OJSXA33SOQXHAZDG","raw_data","report"],"imported":[false,false,false,true,false,false,false],"label":["data","fit","hist","file raw-data.xlsx","file report.pdf","raw_data","report"],"status":["outdated","outdated","outdated","imported","outdated","outdated","outdated"],"type":["object","object","object","file","file","object","object"],"font.size":[20,20,20,20,20,20,20],"color":["#000000","#000000","#000000","#1874CD","#000000","#000000","#000000"],"shape":["dot","dot","dot","square","square","dot","dot"],"level":[3,4,4,1,6,2,5],"x":[0,-1,1,0,0,0,0],"y":[-0.2,0.2,0.2,-1,1,-0.6,0.6]},"edges":{"from":["p-OJQXOLLEMF2GCLTYNRZXQ","raw_data","data","data","fit","hist","report"],"to":["raw_data","data","fit","hist","report","report","p-OJSXA33SOQXHAZDG"],"arrows":["to","to","to","to","to","to","to"],"smooth":[true,true,true,true,true,true,true]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"direction":"LR"}},"edges":{"smooth":false},"physics":{"stabilization":false},"interaction":{"navigationButtons":true}},"groups":null,"width":"100%","height":null,"idselection":{"enabled":false,"style":"width: 150px; height: 26px","useLabels":true,"main":"Select by id"},"byselection":{"enabled":false,"style":"width: 150px; height: 26px","multiple":false,"hideColor":"rgba(200,200,200,0.5)"},"main":{"text":"Dependency graph","style":"font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;"},"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","highlight":{"enabled":false,"hoverNearest":false,"degree":1,"algorithm":"all","hideColor":"rgba(200,200,200,0.5)","labelOnly":true},"collapse":{"enabled":true,"fit":false,"resetHighlight":true,"clusterOptions":null,"keepCoord":true,"labelSuffix":"(cluster)"},"igraphlayout":{"type":"square"},"tooltipStay":300,"tooltipStyle":"position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -73,7 +74,7 @@ plan &lt;- drake_plan(
   
   fit = lm(Sepal.Width ~ Petal.Width + Species, data),
   
-  rmarkdown::render(
+  report = rmarkdown::render(
     knitr_in("report.Rmd"),
     output_file = file_out("report.pdf"),
     quiet = TRUE
@@ -87,13 +88,13 @@ plan &lt;- drake_plan(
 ```r
 plan
 ## # A tibble: 5 x 2
-##   target           command                                      
-##   &lt;chr&gt;            &lt;chr&gt;                                        
-## 1 raw_data         "readxl::read_xlsx(file_in(\"raw-data.xlsx\"…
-## 2 data             raw_data %&gt;% mutate(Species = forcats::fct_i…
-## 3 hist             create_plot(data)                            
-## 4 fit              lm(Sepal.Width ~ Petal.Width + Species, data)
-## 5 "\"report.pdf\"" "rmarkdown::render(knitr_in(\"report.Rmd\"),…
+##   target   command                                               
+##   &lt;chr&gt;    &lt;expr&gt;                                                
+## 1 raw_data readxl::read_xlsx(file_in("raw-data.xlsx"))          …
+## 2 data     raw_data %&gt;% mutate(Species = forcats::fct_inorder(Sp…
+## 3 hist     create_plot(data)                                    …
+## 4 fit      lm(Sepal.Width ~ Petal.Width + Species, data)        …
+## 5 report   rmarkdown::render(knitr_in("report.Rmd"), output_file…
 ```
 
 ---
@@ -107,7 +108,7 @@ make(plan)
 ## target data
 ## target fit
 ## target hist
-## target file "report.pdf"
+## target report
 ```
 
 ]
@@ -152,19 +153,19 @@ summary(readd(fit))
 loadd(data, hist)
 data
 ## # A tibble: 150 x 6
-##     X__1 Sepal.Length Sepal.Width Petal.Length Petal.Width
+##    index Sepal.Length Sepal.Width Petal.Length Petal.Width
 ##    &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;
-##  1    1.         5.10        3.50         1.40       0.200
-##  2    2.         4.90        3.00         1.40       0.200
-##  3    3.         4.70        3.20         1.30       0.200
-##  4    4.         4.60        3.10         1.50       0.200
-##  5    5.         5.00        3.60         1.40       0.200
-##  6    6.         5.40        3.90         1.70       0.400
-##  7    7.         4.60        3.40         1.40       0.300
-##  8    8.         5.00        3.40         1.50       0.200
-##  9    9.         4.40        2.90         1.40       0.200
-## 10   10.         4.90        3.10         1.50       0.100
-## # ... with 140 more rows, and 1 more variable: Species &lt;fct&gt;
+##  1     1          5.1         3.5          1.4         0.2
+##  2     2          4.9         3            1.4         0.2
+##  3     3          4.7         3.2          1.3         0.2
+##  4     4          4.6         3.1          1.5         0.2
+##  5     5          5           3.6          1.4         0.2
+##  6     6          5.4         3.9          1.7         0.4
+##  7     7          4.6         3.4          1.4         0.3
+##  8     8          5           3.4          1.5         0.2
+##  9     9          4.4         2.9          1.4         0.2
+## 10    10          4.9         3.1          1.5         0.1
+## # … with 140 more rows, and 1 more variable: Species &lt;fct&gt;
 ```
 
 ---
@@ -181,13 +182,13 @@ plan &lt;- drake_plan(
 
   data = raw_data %&gt;% 
     mutate(Species = forcats::fct_inorder(Species)) %&gt;%
-*   select(-X__1),
+*   select(Sepal.Length:Species),
   
   hist = create_plot(data),
   
   fit = lm(Sepal.Width ~ Petal.Width + Species, data),
   
-  rmarkdown::render(
+  report = rmarkdown::render(
     knitr_in("report.Rmd"),
     output_file = file_out("report.pdf"),
     quiet = TRUE
@@ -198,7 +199,7 @@ plan &lt;- drake_plan(
 ---
 
 <div id="htmlwidget-ac00066e7f6365b7f0d3" style="width:100%;height:504px;" class="visNetwork html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ac00066e7f6365b7f0d3">{"x":{"nodes":{"id":["\"raw-data.xlsx\"","raw_data","data","fit","hist","\"report.pdf\""],"label":["\"raw-data.xlsx\"","raw_data","data","fit","hist","\"report.pdf\""],"status":["imported","up to date","outdated","outdated","outdated","outdated"],"type":["file","object","object","object","object","file"],"level":[0,1,2,3,3,4],"font.size":[20,20,20,20,20,20],"color":["#1874CD","#228B22","#000000","#000000","#000000","#000000"],"shape":["square","dot","dot","dot","dot","square"],"hover_label":["\"raw-data.xlsx\"","readxl::read_xlsx(file_in(\"raw-data.xlsx\"))","raw_data %>% mutate(Species =\nforcats::fct_inorder(Species)) %>% select(-X__1)","lm(Sepal.Width ~ Petal.Width + Species, data)","create_plot(data)","rmarkdown::render(knitr_in(\"report.Rmd\"), output_file =\nfile_out(\"report.pdf\"), quiet = TRUE)"],"x":[0,0,0,-1,1,0],"y":[-1,-0.5,0,0.5,0.5,1]},"edges":{"from":["hist","fit","data","data","raw_data","\"raw-data.xlsx\""],"to":["\"report.pdf\"","\"report.pdf\"","hist","fit","data","raw_data"],"arrows":["to","to","to","to","to","to"]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"direction":"LR"}},"edges":{"smooth":false},"physics":{"stabilization":false},"interaction":{"navigationButtons":true}},"groups":null,"width":"100%","height":null,"idselection":{"enabled":false},"byselection":{"enabled":false},"main":{"text":"Workflow graph","style":"font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;"},"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","legend":{"width":0.2,"useGroups":false,"position":"left","ncol":1,"stepX":100,"stepY":100,"zoom":true,"nodes":{"label":["Up to date","Outdated","Imported","Object","File"],"color":["#228B22","#000000","#1874CD","#888888","#888888"],"shape":["dot","dot","dot","dot","square"],"font.color":["black","black","black","black","black"],"font.size":[20,20,20,20,20],"id":[1,2,5,7,9]},"nodesToDataframe":true},"igraphlayout":{"type":"square"},"tooltipStay":300,"tooltipStyle":"position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-ac00066e7f6365b7f0d3">{"x":{"nodes":{"id":["data","fit","hist","p-OJQXOLLEMF2GCLTYNRZXQ","p-OJSXA33SOQXHAZDG","raw_data","report"],"imported":[false,false,false,true,false,false,false],"label":["data","fit","hist","file raw-data.xlsx","file report.pdf","raw_data","report"],"status":["outdated","outdated","outdated","imported","outdated","up to date","outdated"],"type":["object","object","object","file","file","object","object"],"font.size":[20,20,20,20,20,20,20],"color":["#000000","#000000","#000000","#1874CD","#000000","#228B22","#000000"],"shape":["dot","dot","dot","square","square","dot","dot"],"level":[3,4,4,1,6,2,5],"x":[0,-1,1,0,0,0,0],"y":[-0.2,0.2,0.2,-1,1,-0.6,0.6]},"edges":{"from":["p-OJQXOLLEMF2GCLTYNRZXQ","raw_data","data","data","fit","hist","report"],"to":["raw_data","data","fit","hist","report","report","p-OJSXA33SOQXHAZDG"],"arrows":["to","to","to","to","to","to","to"],"smooth":[true,true,true,true,true,true,true]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"direction":"LR"}},"edges":{"smooth":false},"physics":{"stabilization":false},"interaction":{"navigationButtons":true}},"groups":null,"width":"100%","height":null,"idselection":{"enabled":false,"style":"width: 150px; height: 26px","useLabels":true,"main":"Select by id"},"byselection":{"enabled":false,"style":"width: 150px; height: 26px","multiple":false,"hideColor":"rgba(200,200,200,0.5)"},"main":{"text":"Dependency graph","style":"font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;"},"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","highlight":{"enabled":false,"hoverNearest":false,"degree":1,"algorithm":"all","hideColor":"rgba(200,200,200,0.5)","labelOnly":true},"collapse":{"enabled":true,"fit":false,"resetHighlight":true,"clusterOptions":null,"keepCoord":true,"labelSuffix":"(cluster)"},"legend":{"width":0.2,"useGroups":false,"position":"left","ncol":1,"stepX":100,"stepY":100,"zoom":true,"nodes":{"label":["Up to date","Outdated","Imported","Object","File"],"color":["#228B22","#000000","#1874CD","#888888","#888888"],"shape":["dot","dot","dot","dot","square"],"font.color":["black","black","black","black","black"],"font.size":[20,20,20,20,20],"id":[1,2,5,7,9]},"nodesToDataframe":true},"igraphlayout":{"type":"square"},"tooltipStay":300,"tooltipStyle":"position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -208,22 +209,22 @@ make(plan)
 ## target data
 ## target fit
 ## target hist
-## target file "report.pdf"
+## target report
 readd(data)
 ## # A tibble: 150 x 5
 ##    Sepal.Length Sepal.Width Petal.Length Petal.Width Species
 ##           &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;  
-##  1         5.10        3.50         1.40       0.200 setosa 
-##  2         4.90        3.00         1.40       0.200 setosa 
-##  3         4.70        3.20         1.30       0.200 setosa 
-##  4         4.60        3.10         1.50       0.200 setosa 
-##  5         5.00        3.60         1.40       0.200 setosa 
-##  6         5.40        3.90         1.70       0.400 setosa 
-##  7         4.60        3.40         1.40       0.300 setosa 
-##  8         5.00        3.40         1.50       0.200 setosa 
-##  9         4.40        2.90         1.40       0.200 setosa 
-## 10         4.90        3.10         1.50       0.100 setosa 
-## # ... with 140 more rows
+##  1          5.1         3.5          1.4         0.2 setosa 
+##  2          4.9         3            1.4         0.2 setosa 
+##  3          4.7         3.2          1.3         0.2 setosa 
+##  4          4.6         3.1          1.5         0.2 setosa 
+##  5          5           3.6          1.4         0.2 setosa 
+##  6          5.4         3.9          1.7         0.4 setosa 
+##  7          4.6         3.4          1.4         0.3 setosa 
+##  8          5           3.4          1.5         0.2 setosa 
+##  9          4.4         2.9          1.4         0.2 setosa 
+## 10          4.9         3.1          1.5         0.1 setosa 
+## # … with 140 more rows
 ```
 
 ---
@@ -252,13 +253,13 @@ plan &lt;- drake_plan(
 
   data = raw_data %&gt;% 
     mutate(Species = forcats::fct_inorder(Species)) %&gt;%
-    select(-X__1),
+    select(Sepal.Length:Species),
   
   hist = create_plot(data),
   
   fit = lm(Sepal.Width ~ Petal.Width + Species, data),
   
-  rmarkdown::render(
+  report = rmarkdown::render(
     knitr_in("report.Rmd"),
     output_file = file_out("report.pdf"),
     quiet = TRUE
@@ -276,7 +277,7 @@ plan &lt;- drake_plan(
 ```r
 make(plan)
 ## target hist
-## target file "report.pdf"
+## target report
 ```
 
 ]
@@ -290,12 +291,13 @@ make(plan)
 ---
 
 <div id="htmlwidget-a261f1c13aea9e511342" style="width:100%;height:504px;" class="visNetwork html-widget"></div>
-<script type="application/json" data-for="htmlwidget-a261f1c13aea9e511342">{"x":{"nodes":{"id":["aes","geom_histogram","ggplot","theme_gray","\"raw-data.xlsx\"","readxl::read_xlsx","forcats::fct_inorder","mutate","select","lm","\"report.Rmd\"","rmarkdown::render","create_plot","raw_data","data","fit","hist","\"report.pdf\""],"label":["aes","geom_histogram","ggplot","theme_gray","\"raw-data.xlsx\"","readxl::read_xlsx","forcats::fct_inorder","mutate","select","lm","\"report.Rmd\"","rmarkdown::render","create_plot","raw_data","data","fit","hist","\"report.pdf\""],"status":["imported","imported","imported","imported","imported","imported","imported","imported","imported","imported","imported","imported","imported","up to date","up to date","up to date","up to date","up to date"],"type":["function","function","function","function","file","function","function","function","function","function","file","function","function","object","object","object","object","file"],"level":[0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,4,4,5],"font.size":[20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20],"color":["#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#228B22","#228B22","#228B22","#228B22","#228B22"],"shape":["triangle","triangle","triangle","triangle","square","triangle","triangle","triangle","triangle","triangle","square","triangle","triangle","dot","dot","dot","dot","square"],"hover_label":["function (x, y, ...) \n{\n    aes <- structure(as.list(match.call()[-1]), class = \"uneval\")\n    rename_aes(aes)\n}","function (mapping = NULL, data = NULL, stat = \"bin\", position = \"stack\", \n    ..., binwidth = NULL, bins = NULL, na.rm = FALSE, show.legend = NA, \n    inherit.aes = TRUE) \n{\n    layer(data = data, mapping = mapping, stat = stat, geom = GeomBar, \n ...","function (data = NULL, mapping = aes(), ..., environment = parent.frame()) \n{\n    UseMethod(\"ggplot\")\n}","function (base_size = 11, base_family = \"\") \n{\n    half_line <- base_size/2\n    theme(line = element_line(colour = \"black\", size = 0.5, linetype = 1, \n        lineend = \"butt\"), rect = element_rect(fill = \"white\", \n        colour = \"black\", size =...","\"raw-data.xlsx\"","function (path, sheet = NULL, range = NULL, col_names = TRUE, \n    col_types = NULL, na = \"\", trim_ws = TRUE, skip = 0, n_max = Inf, \n    guess_max = min(1000, n_max)) \n{\n    read_excel_(path = path, sheet = sheet, range = range, col_names = col_n...","function (f, ordered = NA) \n{\n    f <- check_factor(f)\n    idx <- as.integer(f)[!duplicated(f)]\n    idx <- idx[!is.na(idx)]\n    lvls_reorder(f, idx, ordered = ordered)\n}","function (.data, ...) \n{\n    UseMethod(\"mutate\")\n}","function (.data, ...) \n{\n    UseMethod(\"select\")\n}","function (formula, data, subset, weights, na.action, method = \"qr\", \n    model = TRUE, x = FALSE, y = FALSE, qr = TRUE, singular.ok = TRUE, \n    contrasts = NULL, offset, ...) \n{\n    ret.x <- x\n    ret.y <- y\n    cl <- match.call()\n    mf <- match...","---\ntitle: \"Report\"\nauthor: \"Kirill Müller\"\ndate: \"March 20, 2018\"\noutput: pdf_document\n---\n\n## The model\n\n```{r opts-width-on, include=FALSE}","function (input, output_format = NULL, output_file = NULL, output_dir = NULL, \n    output_options = NULL, intermediates_dir = NULL, knit_root_dir = NULL, \n    runtime = c(\"auto\", \"static\", \"shiny\", \"shiny_prerendered\"), \n    clean = TRUE, params =...","function (data) \n{\n    ggplot(data, aes(x = Petal.Width, fill = Species)) + geom_histogram(binwidth = 0.25) + \n        theme_gray(20)\n}","readxl::read_xlsx(file_in(\"raw-data.xlsx\"))","raw_data %>% mutate(Species =\nforcats::fct_inorder(Species)) %>% select(-X__1)","lm(Sepal.Width ~ Petal.Width + Species, data)","create_plot(data)","rmarkdown::render(knitr_in(\"report.Rmd\"), output_file =\nfile_out(\"report.pdf\"), quiet = TRUE)"],"x":[-1,-0.818181818181818,-0.636363636363636,-0.454545454545455,-0.272727272727273,-0.0909090909090909,0.0909090909090908,0.272727272727273,0.454545454545455,0.636363636363636,0.818181818181818,1,-0.727272727272727,-0.181818181818182,0.181818181818182,0.363636363636364,-0.272727272727273,0.454545454545455],"y":[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-0.5,-0.5,0,0.5,0.5,1]},"edges":{"from":["aes","geom_histogram","ggplot","theme_gray","\"raw-data.xlsx\"","readxl::read_xlsx","forcats::fct_inorder","mutate","raw_data","select","create_plot","data","data","lm","\"report.Rmd\"","fit","hist","rmarkdown::render"],"to":["create_plot","create_plot","create_plot","create_plot","raw_data","raw_data","data","data","data","data","hist","fit","hist","fit","\"report.pdf\"","\"report.pdf\"","\"report.pdf\"","\"report.pdf\""],"arrows":["to","to","to","to","to","to","to","to","to","to","to","to","to","to","to","to","to","to"]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"direction":"LR"}},"edges":{"smooth":false},"physics":{"stabilization":false},"interaction":{"navigationButtons":true}},"groups":null,"width":"100%","height":null,"idselection":{"enabled":false},"byselection":{"enabled":false},"main":{"text":"Workflow graph","style":"font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;"},"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","legend":{"width":0.2,"useGroups":false,"position":"left","ncol":1,"stepX":100,"stepY":100,"zoom":true,"nodes":{"label":["Up to date","Imported","Object","Function","File"],"color":["#228B22","#1874CD","#888888","#888888","#888888"],"shape":["dot","dot","dot","triangle","square"],"font.color":["black","black","black","black","black"],"font.size":[20,20,20,20,20],"id":[1,5,7,8,9]},"nodesToDataframe":true},"igraphlayout":{"type":"square"},"tooltipStay":300,"tooltipStyle":"position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-a261f1c13aea9e511342">{"x":{"nodes":{"id":["create_plot","data","fit","hist","n-MZXXEY3BORZTUOTGMN2F62LON5ZGIZLS","n-OJSWCZDYNQ5DU4TFMFSF66DMON4A","n-OJWWC4TLMRXXO3R2HJZGK3TEMVZA","p-OJQXOLLEMF2GCLTYNRZXQ","p-OJSXA33SOQXFE3LE","p-OJSXA33SOQXHAZDG","raw_data","report"],"imported":[true,false,false,false,true,true,true,true,true,false,false,false],"label":["create_plot","data","fit","hist","forcats::fct_inorder","readxl::read_xlsx","rmarkdown::render","file raw-data.xlsx","file report.Rmd","file report.pdf","raw_data","report"],"status":["imported","up to date","up to date","up to date","imported","imported","imported","imported","imported","up to date","up to date","up to date"],"type":["function","object","object","object","function","function","function","file","file","file","object","object"],"font.size":[20,20,20,20,20,20,20,20,20,20,20,20],"color":["#1874CD","#228B22","#228B22","#228B22","#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#228B22","#228B22","#228B22"],"shape":["triangle","dot","dot","dot","triangle","triangle","triangle","square","square","square","dot","dot"],"level":[1,3,4,4,1,1,1,1,1,6,2,5],"x":[-1,-0.2,-0.2,-0.6,-0.6,-0.2,0.6,0.2,1,0.6,0,0.6],"y":[-1,-0.2,0.2,0.2,-1,-1,-1,-1,-1,1,-0.6,0.6]},"edges":{"from":["create_plot","n-OJSWCZDYNQ5DU4TFMFSF66DMON4A","p-OJQXOLLEMF2GCLTYNRZXQ","raw_data","n-MZXXEY3BORZTUOTGMN2F62LON5ZGIZLS","data","data","n-OJWWC4TLMRXXO3R2HJZGK3TEMVZA","fit","hist","p-OJSXA33SOQXFE3LE","report"],"to":["hist","raw_data","raw_data","data","data","fit","hist","report","report","report","report","p-OJSXA33SOQXHAZDG"],"arrows":["to","to","to","to","to","to","to","to","to","to","to","to"],"smooth":[true,true,true,true,true,true,true,true,true,true,true,true]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"direction":"LR"}},"edges":{"smooth":false},"physics":{"stabilization":false},"interaction":{"navigationButtons":true}},"groups":null,"width":"100%","height":null,"idselection":{"enabled":false,"style":"width: 150px; height: 26px","useLabels":true,"main":"Select by id"},"byselection":{"enabled":false,"style":"width: 150px; height: 26px","multiple":false,"hideColor":"rgba(200,200,200,0.5)"},"main":{"text":"Dependency graph","style":"font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;"},"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","highlight":{"enabled":false,"hoverNearest":false,"degree":1,"algorithm":"all","hideColor":"rgba(200,200,200,0.5)","labelOnly":true},"collapse":{"enabled":true,"fit":false,"resetHighlight":true,"clusterOptions":null,"keepCoord":true,"labelSuffix":"(cluster)"},"legend":{"width":0.2,"useGroups":false,"position":"left","ncol":1,"stepX":100,"stepY":100,"zoom":true,"nodes":{"label":["Up to date","Imported","Object","Function","File"],"color":["#228B22","#1874CD","#888888","#888888","#888888"],"shape":["dot","dot","dot","triangle","square"],"font.color":["black","black","black","black","black"],"font.size":[20,20,20,20,20],"id":[1,5,7,8,9]},"nodesToDataframe":true},"igraphlayout":{"type":"square"},"tooltipStay":300,"tooltipStyle":"position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
 class: inverse, middle, center
     </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
 "highlightStyle": "github",
@@ -305,26 +307,79 @@ class: inverse, middle, center
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));
 });
-(function() {
-  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
   if (!r) return;
   s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
   d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
 })();</script>
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  tex2jax: {
-    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
   }
-});
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
 (function () {
   var script = document.createElement('script');
   script.type = 'text/javascript';
-  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
   if (location.protocol !== 'file:' && /^https?:/.test(script.src))
     script.src  = script.src.replace(/^https?:/, '');
   document.getElementsByTagName('head')[0].appendChild(script);
